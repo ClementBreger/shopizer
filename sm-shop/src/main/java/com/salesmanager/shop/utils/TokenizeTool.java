@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class TokenizeTool {
 	
-	private final static String CIPHER = "AES/ECB/PKCS5Padding";
+	private final static String CIPHER = "AES/GCM/NoPadding";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TokenizeTool.class);
 	

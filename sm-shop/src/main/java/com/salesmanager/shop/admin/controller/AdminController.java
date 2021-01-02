@@ -58,10 +58,6 @@ public class AdminController {
 		model.addAttribute("store", store);
 		model.addAttribute("country", country);
 		model.addAttribute("user", currentUser);
-		//get last 10 orders
-		//OrderCriteria orderCriteria = new OrderCriteria();
-		//orderCriteria.setMaxCount(10);
-		//orderCriteria.setOrderBy(CriteriaOrderBy.DESC);
 		
 		return ControllerConstants.Tiles.adminDashboard;
 	}

@@ -1,9 +1,11 @@
 package com.salesmanager.shop.filter;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import com.salesmanager.shop.utils.SanitizeUtils;
+import org.springframework.web.util.HtmlUtils;
 
 /**
  * Cross Site Scripting filter enforcing html encoding of request parameters
@@ -52,7 +54,21 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 	    private String cleanXSS(String value) {
 	        // You'll need to remove the spaces from the html entities below
-	    	return SanitizeUtils.getSafeString(value);
+/*	        logger.info("InnXSS RequestWrapper ..............." + value);
+	        //value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
+	        //value = value.replaceAll("\\(", "& #40;").replaceAll("\\)", "& #41;");
+	        //value = value.replaceAll("'", "& #39;");
+	        value = value.replaceAll("eval\\((.*)\\)", "");
+	        value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
+
+	        value = value.replaceAll("(?i)<script.*?>.*?<script.*?>", "");
+	        value = value.replaceAll("(?i)<script.*?>.*?</script.*?>", "");
+	        value = value.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
+	        value = value.replaceAll("(?i)<.*?\\s+on.*?>.*?</.*?>", "");
+	        //value = value.replaceAll("<script>", "");
+	        //value = value.replaceAll("</script>", "");
+	        logger.info("OutnXSS RequestWrapper ........ value ......." + value);*/
+	        return HtmlUtils.htmlEscape(value);
 	    }
 
 }

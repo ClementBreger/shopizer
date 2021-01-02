@@ -349,8 +349,7 @@ public class ShoppingCartController extends AbstractController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value={"/removeShoppingCartItem.html"},   method = { RequestMethod.GET, RequestMethod.POST })
-
-	String removeShoppingCartItem(final Long lineItemId, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+	public String removeShoppingCartItem(final Long lineItemId, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
 
 

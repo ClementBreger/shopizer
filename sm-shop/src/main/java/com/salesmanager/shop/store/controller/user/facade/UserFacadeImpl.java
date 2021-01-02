@@ -394,8 +394,7 @@ public class UserFacadeImpl implements UserFacade {
 			}
 
 			Group adminGroup = auth.getGroups().stream()
-					.filter((group) -> Constants.GROUP_SUPERADMIN.equals(group.getGroupName())
-							|| Constants.GROUP_SUPERADMIN.equals(group.getGroupName()))
+					.filter((group) -> Constants.GROUP_SUPERADMIN.equals(group.getGroupName()))
 					.findAny().orElse(null);
 
 			if (adminGroup == null) {

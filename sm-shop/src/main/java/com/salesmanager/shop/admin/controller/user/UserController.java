@@ -141,7 +141,7 @@ public class UserController {
 				
 				if(!UserUtils.userInGroup(user, Constants.GROUP_SUPERADMIN)) {
 					
-					if(!currentUser.equals(user.getAdminName())){
+					if(!currentUser.getAdminName().equals(user.getAdminName())){
 
 						@SuppressWarnings("rawtypes")
 						Map entry = new HashMap();
@@ -308,7 +308,6 @@ public class UserController {
 		
 		
 		List<MerchantStore> stores = new ArrayList<MerchantStore>();
-		//stores.add(store);
 		stores = merchantStoreService.list();
 		
 		
@@ -519,9 +518,9 @@ public class UserController {
 			result.addError(error);
 		}
 		
-		if(user.getQuestion1().equals(user.getQuestion2()) || user.getQuestion1().equals(user.getQuestion3())
-				|| user.getQuestion2().equals(user.getQuestion1()) || user.getQuestion1().equals(user.getQuestion3())
-				|| user.getQuestion3().equals(user.getQuestion1()) || user.getQuestion1().equals(user.getQuestion2()))
+		if(user.getQuestion1().equals(user.getQuestion2()) || user.getQuestion2().equals(user.getQuestion1())
+				|| user.getQuestion1().equals(user.getQuestion3())
+				|| user.getQuestion3().equals(user.getQuestion1()))
 		
 		
 		{

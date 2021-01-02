@@ -180,14 +180,8 @@ public class EmailTemplatesUtils {
 		    		   		orderTable.append("<strong>");
 		    		   			if(total.getModule().equals("tax")) {
 		    		   				orderTable.append(total.getText()).append(": ");
-
 		    		   			} else {
-		    		   				//if(total.getModule().equals("total") || total.getModule().equals("subtotal")) {
-		    		   				//}
 		    		   				orderTable.append(messages.getMessage(total.getOrderTotalCode(), customerLocale)).append(": ");
-		    		   				//if(total.getModule().equals("total") || total.getModule().equals("subtotal")) {
-		    		   					
-		    		   				//}
 		    		   			}
 		    		   		orderTable.append("</strong>");
 		    		   		orderTable.append(CLOSING_TD);

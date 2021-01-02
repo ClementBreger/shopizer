@@ -30,6 +30,7 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
+
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -50,10 +51,19 @@
 
 		<!-- canadapost -->
 		<dependency>
+			<groupId>com.shopizer</groupId>
+			<artifactId>shopizer-shipping-canadapost-module</artifactId>
+			<version>${shopizer-canadapost.version}</version>
+		</dependency>
+		
+		<!-- Upcoming Way -->
+		<!--
+		<dependency>
             <groupId>com.shopizer</groupId>
             <artifactId>shipping-canadapost-spring-boot-starter</artifactId>
             <version>2.17.0</version>
         </dependency>
+        -->
 
 		<!-- Google Map API -->
 		<dependency>
@@ -115,6 +125,7 @@
 			<artifactId>commons-collections4</artifactId>
 		</dependency>
 
+
 		<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
 		<dependency>
 			<groupId>commons-validator</groupId>
@@ -126,6 +137,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
 		<dependency>
@@ -168,6 +180,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 
 		<!-- Payment dependencies -->
 

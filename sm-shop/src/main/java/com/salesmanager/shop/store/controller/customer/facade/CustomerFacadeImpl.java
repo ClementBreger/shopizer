@@ -346,7 +346,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 
     Customer customerModel = getCustomerModel(customer, merchantStore, language);
     if (customerModel == null) {
-      LOG.equals("Unable to create customer in system");
+      LOG.error("Unable to create customer in system");
       // throw new CustomerRegistrationException( "Unable to register customer" );
       throw new Exception("Unable to register customer");
     }

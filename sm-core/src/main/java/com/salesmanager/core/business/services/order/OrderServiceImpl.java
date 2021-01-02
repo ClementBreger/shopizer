@@ -201,8 +201,7 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
             for(ProductAvailability availability : p.getAvailabilities()) {
                 int qty = availability.getProductQuantity();
                 if(qty < orderProduct.getProductQuantity()) {
-                    //throw new ServiceException(ServiceException.EXCEPTION_INVENTORY_MISMATCH);
-                	LOGGER.error("APP-BACKEND [" + ServiceException.EXCEPTION_INVENTORY_MISMATCH + "]");
+                    throw new ServiceException(ServiceException.EXCEPTION_INVENTORY_MISMATCH);
                 }
                 qty = qty - orderProduct.getProductQuantity();
                 availability.setProductQuantity(qty);
@@ -265,7 +264,7 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
 
                             orderTotalValue = orderTotalValue.add(price.getFinalPrice());
                             itemSubTotal.setValue(orderTotalValue);
-                            if(price.getProductPrice().getProductPriceType().name().equals(OrderValueType.ONE_TIME)) {
+                            if(price.getProductPrice().getProductPriceType().name().equalsIgnoreCase(String.valueOf(OrderValueType.ONE_TIME))) {
                                 subTotal = subTotal.add(price.getFinalPrice());
                             }
                         }
@@ -306,7 +305,6 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
         orderTotalSubTotal.setOrderTotalType(OrderTotalType.SUBTOTAL);
         orderTotalSubTotal.setOrderTotalCode("order.total.subtotal");
         orderTotalSubTotal.setTitle(Constants.OT_SUBTOTAL_MODULE_CODE);
-        //orderTotalSubTotal.setText("order.total.subtotal");
         orderTotalSubTotal.setSortOrder(5);
         orderTotalSubTotal.setValue(subTotal);
         

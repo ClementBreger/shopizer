@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.helper.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +34,6 @@ import com.salesmanager.core.model.order.Order;
 import com.salesmanager.core.model.order.OrderCriteria;
 import com.salesmanager.core.model.reference.language.Language;
 import com.salesmanager.core.model.shoppingcart.ShoppingCart;
-import com.salesmanager.core.modules.integration.IntegrationException;
 import com.salesmanager.shop.constants.Constants;
 import com.salesmanager.shop.model.customer.PersistableCustomer;
 import com.salesmanager.shop.model.customer.ReadableCustomer;
@@ -43,7 +41,6 @@ import com.salesmanager.shop.model.order.v0.ReadableOrder;
 import com.salesmanager.shop.model.order.v0.ReadableOrderList;
 import com.salesmanager.shop.model.order.v1.PersistableAnonymousOrder;
 import com.salesmanager.shop.model.order.v1.PersistableOrder;
-import com.salesmanager.shop.model.order.v1.ReadableOrderConfirmation;
 import com.salesmanager.shop.populator.customer.ReadableCustomerPopulator;
 import com.salesmanager.shop.store.api.exception.ResourceNotFoundException;
 import com.salesmanager.shop.store.api.exception.ServiceRuntimeException;
@@ -61,8 +58,8 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/api/v1")
-@Api(tags = { "Ordering api (Order Flow Api)" })
-@SwaggerDefinition(tags = { @Tag(name = "Order flow resource", description = "Manage orders (create, list, get)") })
+@Api(tags = { "Order management resource (Order Management Api)" })
+@SwaggerDefinition(tags = { @Tag(name = "Order management resource", description = "Manage orders") })
 public class OrderApi {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderApi.class);
@@ -72,9 +69,6 @@ public class OrderApi {
 
 	@Inject
 	private OrderFacade orderFacade;
-	
-	@Inject
-	private com.salesmanager.shop.store.controller.order.facade.v1.OrderFacade orderFacadeV1;  
 
 	@Inject
 	private ShoppingCartService shoppingCartService;
@@ -346,12 +340,8 @@ public class OrderApi {
 	@ResponseBody
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "string", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "string", defaultValue = "en") })
-	public ReadableOrderConfirmation checkout(
-			@PathVariable final String code, //shopping cart
-			@Valid @RequestBody PersistableOrder order, // order
-			@ApiIgnore MerchantStore merchantStore,
-			@ApiIgnore Language language, 
-			HttpServletRequest request,
+	public PersistableOrder checkout(@PathVariable final String code, @Valid @RequestBody PersistableOrder order,
+			@ApiIgnore MerchantStore merchantStore, @ApiIgnore Language language, HttpServletRequest request,
 			HttpServletResponse response, Locale locale) throws Exception {
 
 		try {
@@ -375,12 +365,12 @@ public class OrderApi {
 
 			Order modelOrder = orderFacade.processOrder(order, customer, merchantStore, language, locale);
 			Long orderId = modelOrder.getId();
-			modelOrder.setId(orderId);
+			order.setId(orderId);
 
-			
-			return orderFacadeV1.orderConfirmation(modelOrder, customer, merchantStore, language);
-			
+			// hash payment token
+			order.getPayment().setPaymentToken("***");
 
+			return order;
 
 		} catch (Exception e) {
 			LOGGER.error("Error while processing checkout", e);
@@ -397,9 +387,9 @@ public class OrderApi {
 	@ResponseBody
 	@ApiImplicitParams({ @ApiImplicitParam(name = "store", dataType = "string", defaultValue = "DEFAULT"),
 			@ApiImplicitParam(name = "lang", dataType = "string", defaultValue = "en") })
-	public ReadableOrderConfirmation checkout(
-			@PathVariable final String code,//shopping cart
-			@Valid @RequestBody PersistableAnonymousOrder order,//order 
+	public PersistableOrder checkout(
+			@PathVariable final String code,
+			@Valid @RequestBody PersistableAnonymousOrder order, 
 			@ApiIgnore MerchantStore merchantStore,
 			@ApiIgnore Language language) {
 
@@ -421,23 +411,16 @@ public class OrderApi {
 			Order modelOrder = orderFacade.processOrder(order, customer, merchantStore, language,
 					LocaleUtils.getLocale(language));
 			Long orderId = modelOrder.getId();
-			//populate order confirmation
 			order.setId(orderId);
 			// set customer id
 			order.getCustomer().setId(modelOrder.getCustomerId());
 
-			return orderFacadeV1.orderConfirmation(modelOrder, customer, merchantStore, language);
-			
+			// hash payment token
+			order.getPayment().setPaymentToken("***");
+			return order;
 
 		} catch (Exception e) {
-			String message = e.getMessage();
-			if(StringUtils.isBlank(message)) {//exception type
-				message = "APP-BACKEND";
-				if(e.getCause() instanceof com.salesmanager.core.modules.integration.IntegrationException) {
-					message = "Integration problen occured to complete order";
-				}
-			}
-			throw new ServiceRuntimeException("Error during checkout [" + message + "]", e);
+			throw new ServiceRuntimeException("Error during checkout " + e.getMessage(), e);
 		}
 
 	}

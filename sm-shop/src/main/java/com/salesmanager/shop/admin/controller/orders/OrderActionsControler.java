@@ -189,7 +189,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(OrderActionsControl
 				}
 				
 			} catch (Exception e) {
-				LOGGER.equals("invalid refundAmount " + refund.getAmount());
+				LOGGER.error("invalid refundAmount ", refund.getAmount());
 				resp.setStatus(AjaxResponse.RESPONSE_STATUS_FAIURE);
 				String returnString = resp.toJSONString();
 				return new ResponseEntity<String>(returnString,httpHeaders,HttpStatus.OK);

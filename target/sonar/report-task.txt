@@ -1,0 +1,6 @@
+projectKey=com.shopizer:shopizer
+serverUrl=http://localhost:9000
+serverVersion=8.6.0.39681
+dashboardUrl=http://localhost:9000/dashboard?id=com.shopizer%3Ashopizer
+ceTaskId=AXbDG9VGFYcGxY138EmD
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXbDG9VGFYcGxY138EmD
